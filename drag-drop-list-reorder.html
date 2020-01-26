@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Learning HTML5 Canvas</title>
+  </head>
+  <body>
+    <ul ondragstart="handleDragStart(event)">
+      <li
+        ondragenter="handleDragEnter(event)"
+        ondragover="handleDragOver(event)"
+        ondrop="handleDrop(event)"
+        id="1"
+        draggable="true"
+      >
+        Item 1
+      </li>
+      <li
+        ondragenter="handleDragEnter(event)"
+        ondragover="handleDragOver(event)"
+        ondrop="handleDrop(event)"
+        id="2"
+        draggable="true"
+      >
+        Item 2
+      </li>
+      <li
+        ondragenter="handleDragEnter(event)"
+        ondragover="handleDragOver(event)"
+        ondrop="handleDrop(event)"
+        id="3"
+        draggable="true"
+      >
+        Item 3
+      </li>
+      <li
+        ondragenter="handleDragEnter(event)"
+        ondragover="handleDragOver(event)"
+        ondrop="handleDrop(event)"
+        id="4"
+        draggable="true"
+      >
+        Item 4
+      </li>
+    </ul>
+
+    <script>
+      function handleDragStart(event) {
+        if (event.target instanceof HTMLLIElement) {
+          event.dataTransfer.setData("id", event.target.getAttribute("id"));
+          event.dataTransfer.effectAllowed = "move";
+        } else {
+          event.preventDefault();
+        }
+      }
+
+      function handleDragEnter(event) {
+        let items = event.dataTransfer.items;
+        for (let i = 0; i < items.length; i++) {
+          let item = items[i];
+          if (item.kind == "string" && item.type == "id") {
+            event.preventDefault();
+            return;
+          }
+        }
+      }
+
+      function handleDragOver(event) {
+        event.dataTransfer.dropEffect = "move";
+        event.preventDefault();
+      }
+      function handleDrop(event) {
+        let draggedItem = document.getElementById(
+          event.dataTransfer.getData("id")
+        );
+
+        if (draggedItem.offsetTop < event.target.offsetTop) {
+          event.target.insertAdjacentElement("afterEnd", draggedItem);
+        } else {
+          event.target.insertAdjacentElement("beforeBegin", draggedItem);
+        }
+      }
+    </script>
+  </body>
+</html>
